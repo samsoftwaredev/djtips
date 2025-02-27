@@ -26,7 +26,6 @@ const Input = ({
         )}
         <label htmlFor={name} className="flex-1">
           <input
-            /* eslint-disable react/jsx-props-no-spreading */
             {...reg(name, registerOptions)}
             id={name}
             type={type}

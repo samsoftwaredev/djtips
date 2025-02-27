@@ -1,9 +1,20 @@
-import { SongRequestForm } from "@/components";
+"use client";
 
-export default function Page({ params }: { params: { id: string } }) {
+import { SongRequestForm } from "@/components";
+import { useEffect } from "react";
+
+export default function Page({ params }: { params: Promise<{ id: string }> }) {
+  const getPlayList = async () => {
+    const { id } = await params;
+    console.log(id);
+  };
+
+  useEffect(() => {
+    getPlayList();
+  }, []);
+
   return (
     <div>
-      {params.id}
       <SongRequestForm />
     </div>
   );
