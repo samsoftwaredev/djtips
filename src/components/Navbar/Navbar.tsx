@@ -129,7 +129,6 @@ const Navbar = () => {
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -141,7 +140,7 @@ const Navbar = () => {
               textDecoration: "none",
             }}
           >
-            LOGO
+            <Link href="/">LOGO</Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
