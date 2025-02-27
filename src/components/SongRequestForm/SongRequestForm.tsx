@@ -1,8 +1,16 @@
 "use client";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
+import {
+  TextField,
+  Button,
+  MenuItem,
+  Box,
+  Typography,
+  Alert,
+  Paper,
+} from "@mui/material";
 
-// Define the form data type
 interface FormData {
   name: string;
   songTitle: string;
@@ -18,7 +26,10 @@ export default function SongRequestForm() {
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      name: localStorage.getItem("userName") || "",
+      name:
+        typeof window !== "undefined"
+          ? localStorage.getItem("userName") || ""
+          : "",
       songTitle: "",
       artist: "",
       tip: "",
@@ -39,73 +50,70 @@ export default function SongRequestForm() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <h2 className="text-2xl font-semibold mb-4">Song Request Form</h2>
+    <Box maxWidth={400} mx="auto" mt={4}>
+      <Paper elevation={3} sx={{ p: 4 }}>
+        <Typography variant="h5" gutterBottom>
+          Song Request Form
+        </Typography>
 
-      {success && (
-        <div className="p-4 bg-green-100 text-green-700 rounded">
-          🎉 Success! Thanks for the TIP. Feel free to request another song.
-        </div>
-      )}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium">Your Name</label>
-          <input
-            type="text"
+        {success && (
+          <Alert severity="success" sx={{ mb: 2 }}>
+            🎉 Success! Thanks for the TIP. Feel free to request another song.
+          </Alert>
+        )}
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <TextField
+            fullWidth
+            label="Your Name"
+            margin="normal"
             {...register("name", { required: "Name is required" })}
-            className="w-full mt-1 p-2 border rounded"
+            error={!!errors.name}
+            helperText={errors.name?.message}
           />
-          {errors.name && (
-            <p className="text-red-500 text-sm">{errors.name.message}</p>
-          )}
-        </div>
 
-        <div>
-          <label className="block text-sm font-medium">Song Title</label>
-          <input
-            type="text"
+          <TextField
+            fullWidth
+            label="Song Title"
+            margin="normal"
             {...register("songTitle", { required: "Song title is required" })}
-            className="w-full mt-1 p-2 border rounded"
+            error={!!errors.songTitle}
+            helperText={errors.songTitle?.message}
           />
-          {errors.songTitle && (
-            <p className="text-red-500 text-sm">{errors.songTitle.message}</p>
-          )}
-        </div>
 
-        <div>
-          <label className="block text-sm font-medium">
-            Artist Name (Optional)
-          </label>
-          <input
-            type="text"
+          <TextField
+            fullWidth
+            label="Artist Name (Optional)"
+            margin="normal"
             {...register("artist")}
-            className="w-full mt-1 p-2 border rounded"
           />
-        </div>
 
-        <div>
-          <label className="block text-sm font-medium">Tip Amount</label>
-          <select
+          <TextField
+            select
+            fullWidth
+            label="Tip Amount"
+            margin="normal"
             {...register("tip", { required: "Please select a tip amount" })}
-            className="w-full mt-1 p-2 border rounded"
+            error={!!errors.tip}
+            helperText={errors.tip?.message}
           >
-            <option value="">Select a tip</option>
-            <option value="3">$3</option>
-            <option value="5">$5</option>
-            <option value="10">$10</option>
-          </select>
-          {errors.tip && (
-            <p className="text-red-500 text-sm">{errors.tip.message}</p>
-          )}
-        </div>
+            <MenuItem value="">Select a tip</MenuItem>
+            <MenuItem value="3">$3</MenuItem>
+            <MenuItem value="5">$5</MenuItem>
+            <MenuItem value="10">$10</MenuItem>
+          </TextField>
 
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition"
-        >
-          Submit
-        </button>
-      </form>
-    </div>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            sx={{ mt: 2 }}
+          >
+            Submit
+          </Button>
+        </form>
+      </Paper>
+    </Box>
   );
 }

@@ -1,13 +1,20 @@
 "use client";
 // system imports
 import { useForm, SubmitHandler } from "react-hook-form";
-import { MdEmail, MdPassword } from "react-icons/md";
-import { FaUserCircle, FaUser } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 import { RiLoginCircleFill } from "react-icons/ri";
 import { ImFacebook, ImTwitter, ImGoogle } from "react-icons/im";
 
 // custom imports
-import { Input, Button } from "@/components";
+import {
+  TextField,
+  Button,
+  IconButton,
+  Typography,
+  Paper,
+  Box,
+  CircularProgress,
+} from "@mui/material";
 import { UserFormValues } from "@/interfaces";
 import { emailSchema, passwordSchema, displayNameSchema } from "@/constants";
 import { useAuth, useTheme } from "@/hooks";
@@ -29,7 +36,7 @@ const Registration = () => {
 
   const onSuccess = () => {
     toastify({
-      message: "Registered up successfully!",
+      message: "Registered successfully!",
       toast_type: "success",
       toast_theme: theme === "dark" ? "dark" : "light",
     });
@@ -41,95 +48,79 @@ const Registration = () => {
 
   return (
     <Layout>
-      <form onSubmit={handleSubmit(handleLogin)} className="">
-        <h2 className="text-center flex justify-center py-2 font-semibold text-primary text-5xl">
-          <FaUserCircle />
-        </h2>
-        <div className="px-5 py-4">
-          <Input
-            name="displayName"
-            type="text"
-            label="Name"
-            reg={register}
-            registerOptions={displayNameSchema}
-            error={errors.displayName && errors.displayName.message}
-            icon={<FaUser />}
-          />
-          <Input
-            name="email"
-            type="text"
-            label="Email"
-            reg={register}
-            registerOptions={emailSchema}
-            error={errors.email && errors.email.message}
-            icon={<MdEmail />}
-          />
-          <Input
-            type="password"
-            name="password"
-            label="Password"
-            reg={register}
-            registerOptions={passwordSchema}
-            error={errors.password && errors.password.message}
-            icon={<MdPassword />}
-          />
-          <Button
-            type="submit"
-            text="Register"
-            classes="w-full mt-8 uppercase"
-            loading={loading}
-            icon={<RiLoginCircleFill />}
-          />
-        </div>
-      </form>
-      <div className="px-5 dark:text-light text-dark text-[.8rem]">
-        Already have an account{" "}
-        <Link
-          className="text-primary font-semibold dark:bg-darkbg bg-lightgray px-2 rounded ml-1"
-          href="/login"
-        >
-          Login here
-        </Link>
-      </div>
-      <div className="mt-5 text-dark dark:text-light mx-5">
-        <p className="text-xs w-full h-[1px] relative bg-primary dark:bg-light">
-          <span className="absolute left-1/2 -translate-x-1/2 top-1/2 p-1 bg-lightgray rounded dark:bg-dark -translate-y-1/2">
-            OR
-          </span>
-        </p>
-        <div className="flex justify-center mt-7">
-          <div className="login-button">
-            <button
-              className="login-provider-button text-primary transition-all shadow-sm shadow-light dark:shadow-dark duration-150 hover:bg-primary hover:text-lightgray text-2xl flex border-primary hover:border-2 hover:border-lightgray border-2 p-2 rounded-full"
-              // onClick={signInWithGoogle}
+      <Box maxWidth={400} mx="auto" mt={4}>
+        <Paper elevation={3} sx={{ p: 4, textAlign: "center" }}>
+          <Typography variant="h4" color="primary" gutterBottom>
+            <FaUserCircle />
+          </Typography>
+
+          <form onSubmit={handleSubmit(handleLogin)}>
+            <TextField
+              fullWidth
+              label="Name"
+              margin="normal"
+              {...register("displayName", displayNameSchema)}
+              error={!!errors.displayName}
+              helperText={errors.displayName?.message}
+            />
+
+            <TextField
+              fullWidth
+              label="Email"
+              margin="normal"
+              {...register("email", emailSchema)}
+              error={!!errors.email}
+              helperText={errors.email?.message}
+            />
+
+            <TextField
+              fullWidth
+              label="Password"
+              type="password"
+              margin="normal"
+              {...register("password", passwordSchema)}
+              error={!!errors.password}
+              helperText={errors.password?.message}
+            />
+
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{ mt: 2 }}
+              startIcon={
+                loading ? <CircularProgress size={20} /> : <RiLoginCircleFill />
+              }
+              disabled={loading}
             >
-              <span className="">
-                <ImGoogle />
-              </span>
-            </button>
-          </div>
-          <div className="login-button mx-4">
-            <button
-              className="login-provider-button text-primary transition-all shadow-sm shadow-light dark:shadow-dark duration-150 hover:bg-primary hover:text-lightgray text-2xl flex border-primary hover:border-2 hover:border-lightgray border-2 p-2 rounded-full"
-              // onClick={signInWithGoogle}
+              Register
+            </Button>
+          </form>
+
+          <Typography variant="body2" sx={{ mt: 2 }}>
+            Already have an account?
+            <Link
+              href="/login"
+              style={{
+                textDecoration: "none",
+                color: "#1976D2",
+                marginLeft: "5px",
+              }}
             >
-              <span className="">
-                <ImFacebook />
-              </span>
-            </button>
-          </div>
-          <div className="login-button">
-            <button
-              className="login-provider-button text-primary transition-all shadow-sm shadow-light dark:shadow-dark duration-150 hover:bg-primary hover:text-lightgray text-2xl flex border-primary hover:border-2 hover:border-lightgray border-2 p-2 rounded-full"
-              // onClick={signInWithGoogle}
-            >
-              <span className="">
-                <ImTwitter />
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
+              Login here
+            </Link>
+          </Typography>
+
+          <Box display="flex" justifyContent="center" mt={2}>
+            {[ImGoogle, ImFacebook, ImTwitter].map((Icon, index) => (
+              <IconButton key={index} color="primary" sx={{ mx: 1 }}>
+                <Icon size={24} />
+              </IconButton>
+            ))}
+          </Box>
+        </Paper>
+      </Box>
     </Layout>
   );
 };
