@@ -79,7 +79,6 @@ const Navbar = () => {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -90,7 +89,7 @@ const Navbar = () => {
               textDecoration: "none",
             }}
           >
-            LOGO
+            <Link href="/">LOGO</Link>
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -196,7 +195,7 @@ const Navbar = () => {
             <div className="mx-3">
               <Link
                 className="bg-primary group transition-transform duration-150 flex items-center font-light hover:bg-secondary text-light px-4 py-2 rounded"
-                href="/signin"
+                href="/login"
               >
                 Sign In{" "}
                 <span className="ml-1 group-hover:translate-x-1 transition-transform duration-150">
