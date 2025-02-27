@@ -5,7 +5,6 @@ import { MdEmail, MdPassword } from "react-icons/md";
 import { FaUserCircle, FaUser } from "react-icons/fa";
 import { RiLoginCircleFill } from "react-icons/ri";
 import { ImFacebook, ImTwitter, ImGoogle } from "react-icons/im";
-import { redirect } from "next/navigation";
 
 // custom imports
 import { Input, Button } from "@/components";
@@ -15,6 +14,7 @@ import { useAuth, useTheme } from "@/hooks";
 import { toastify } from "@/utils/swal";
 import Link from "next/link";
 import Layout from "@/components/Layout/Layout";
+import { useRouter } from "next/navigation";
 
 const Registration = () => {
   const {
@@ -22,6 +22,7 @@ const Registration = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<UserFormValues>();
+  const router = useRouter();
 
   const { SignUp, loading } = useAuth();
   const { theme } = useTheme();
@@ -32,7 +33,7 @@ const Registration = () => {
       toast_type: "success",
       toast_theme: theme === "dark" ? "dark" : "light",
     });
-    redirect("/dashboard");
+    router.push("/dashboard");
   };
   const handleLogin: SubmitHandler<UserFormValues> = (creds) => {
     SignUp(creds, onSuccess);
