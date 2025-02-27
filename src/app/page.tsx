@@ -2,6 +2,7 @@
 
 import Layout from "@/components/Layout/Layout";
 import styles from "./page.module.css";
+import { Button, Typography } from "@mui/material";
 
 export default function Home() {
   return (
@@ -11,8 +12,13 @@ export default function Home() {
         style={{ backgroundImage: 'url("/dj.jpg")' }}
       >
         <div className={styles.centeredText}>
-          <div>Play the music the crowd wants.</div>
-          <div>Get paid while you do it!</div>
+          <Typography fontSize="1.2em" fontWeight="100">
+            Spin the beats they love.
+          </Typography>
+          <Typography fontSize="1.9em" fontWeight="900">
+            Get paid and keep the party alive!
+          </Typography>
+          <Button>Start For Free</Button>
         </div>
       </div>
     </Layout>

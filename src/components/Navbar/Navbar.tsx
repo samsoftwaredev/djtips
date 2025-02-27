@@ -1,11 +1,9 @@
 "use client";
 
-// import { useState } from "react";
 import { RiLoginCircleFill } from "react-icons/ri";
 import Link from "next/link";
 
 import { useAuth } from "@/hooks";
-// import { usePathname } from "next/navigation";
 
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
