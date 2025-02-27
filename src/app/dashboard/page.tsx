@@ -1,9 +1,9 @@
 "use client";
 
-import { PrivateRoutes } from "@/components";
+import { Playlist, PrivateRoutes } from "@/components";
 import Layout from "@/components/Layout/Layout";
 import { useAuth } from "@/hooks";
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import Image from "next/image";
 import QRCode from "qrcode";
 import { useEffect, useState } from "react";
@@ -35,16 +35,19 @@ const Dashboard = () => {
   return (
     <PrivateRoutes>
       <Layout>
-        <h2 className="text-2xl">Dashboard</h2>
-        <Box display="flex" justifyContent="center">
-          <Image
-            onClick={goToSongRequest}
-            width="200"
-            height="200"
-            src={imageQRBase64}
-            alt="Friend Request QR code"
-          />
-        </Box>
+        <Container>
+          <h2 className="text-2xl">Dashboard</h2>
+          <Box display="flex" alignItems="center" justifyContent="center">
+            <Image
+              onClick={goToSongRequest}
+              width="350"
+              height="350"
+              src={imageQRBase64}
+              alt="Friend Request QR code"
+            />
+            <Playlist />
+          </Box>
+        </Container>
       </Layout>
     </PrivateRoutes>
   );
