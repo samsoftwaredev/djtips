@@ -6,3 +6,4 @@ export { default as ThemeSwitch } from "./ThemeSwitch";
 export { default as PrivateRoutes } from "./PrivateRoutes";
 export { default as PageLoading } from "./PageLoading";
 export { default as Layout } from "./Layout";
+export { default as SongRequestForm } from "./SongRequestForm";

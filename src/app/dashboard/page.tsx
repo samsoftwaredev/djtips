@@ -7,11 +7,13 @@ import { Box } from "@mui/material";
 import Image from "next/image";
 import QRCode from "qrcode";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Dashboard = () => {
   const { user } = useAuth();
   const [imageQRBase64, setImageQRBase64] = useState("");
-  const textQR = window.location.origin + user?.uid + user?.displayName;
+  const router = useRouter();
+  const textQR = window.location.origin + "/song-request/" + user?.uid;
 
   const generateQR = async () => {
     try {
@@ -26,12 +28,17 @@ const Dashboard = () => {
     generateQR();
   }, []);
 
+  const goToSongRequest = () => {
+    router.push("/song-request/" + user?.uid);
+  };
+
   return (
     <PrivateRoutes>
       <Layout>
         <h2 className="text-2xl">Dashboard</h2>
         <Box display="flex" justifyContent="center">
           <Image
+            onClick={goToSongRequest}
             width="200"
             height="200"
             src={imageQRBase64}
