@@ -5,7 +5,7 @@ import { MdEmail, MdPassword } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import { RiLoginCircleFill } from "react-icons/ri";
 import { ImFacebook, ImTwitter, ImGoogle } from "react-icons/im";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 // custom imports
@@ -18,6 +18,7 @@ import { toastify } from "@/utils/swal";
 import Layout from "@/components/Layout/Layout";
 
 const Login = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -33,7 +34,7 @@ const Login = () => {
       toast_type: "success",
       toast_theme: theme === "dark" ? "dark" : "light",
     });
-    redirect("/dashboard");
+    router.push("/dashboard");
   };
   const handleLogin: SubmitHandler<LoginFormValues> = (creds) => {
     debugger;

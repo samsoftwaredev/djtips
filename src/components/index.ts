@@ -5,3 +5,4 @@ export { default as Navbar } from "./Navbar";
 export { default as ThemeSwitch } from "./ThemeSwitch";
 export { default as PrivateRoutes } from "./PrivateRoutes";
 export { default as PageLoading } from "./PageLoading";
+export { default as Layout } from "./Layout";

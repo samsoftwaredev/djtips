@@ -132,7 +132,7 @@ const AuthContextProvider = ({ children }: BaseProps) => {
       showAlert("Oops!", "Failed to Sign out", "Ok", alertType.ERROR);
     }
     setIsLoading(false);
-    redirect("/signin");
+    redirect("/login");
   };
   // #endregion
 
