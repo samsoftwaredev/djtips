@@ -2,18 +2,20 @@
 
 import { useAuth } from "@/hooks";
 import { redirect } from "next/navigation";
+import PageLoading from "../PageLoading";
 
 interface Props {
   children?: React.ReactNode;
 }
 
 const PrivateRoutes = ({ children }: Props) => {
-  const { user } = useAuth();
-  if (!user) {
-    redirect("/login");
-  }
+  const { user, loading } = useAuth();
 
-  return <> {children} </>;
+  if (loading) return <PageLoading />;
+
+  if (!user) redirect("/login");
+
+  return children;
 };
 
 export default PrivateRoutes;

@@ -1,123 +1,213 @@
 "use client";
 
-import { useState } from "react";
+// import { useState } from "react";
 import { RiLoginCircleFill } from "react-icons/ri";
 import Link from "next/link";
 
-import { ThemeSwitch } from "@/components";
 import { useAuth } from "@/hooks";
-import { usePathname } from "next/navigation";
+// import { usePathname } from "next/navigation";
+
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import { MdMenu } from "react-icons/md";
+import { useRouter } from "next/navigation";
+
+const pages = ["Products", "Pricing"];
 
 const Navbar = () => {
   const { user, SignOut } = useAuth();
-  const [showUserMenu, setShowUserMenu] = useState(false);
-  const pathname = usePathname();
+  const router = useRouter();
+
+  // const [showUserMenu, setShowUserMenu] = useState(false);
+  // const pathname = usePathname();
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+    null
+  );
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
+
+  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  const settings = [
+    {
+      name: !user ? "Account" : user.displayName,
+      onClick: () => {
+        handleCloseUserMenu();
+        router.push("/profile");
+      },
+    },
+    {
+      name: "Dashboard",
+      onClick: () => {
+        handleCloseUserMenu();
+        router.push("/dashboard");
+      },
+    },
+    { name: "Logout", onClick: SignOut },
+  ];
+
   return (
-    <nav className="flex px-2 lg:px-8 bg-light shadow-sm dark:shadow-dark-bg dark:bg-dark py-4 items-center text-darkgray dark:text-light">
-      <div>
-        <Link href="/">
-          <img
-            className="h-[50px]"
-            src="/images/wb-100.png"
-            alt="WorkBuddy - Manage your tasks and todos easily"
-          />
-        </Link>
-      </div>
-      <div className="flex ml-auto items-center">
-        <div className="mx-3 mr-20 flex self-center">
-          <Link
-            className={
-              pathname === "/"
-                ? "group text-sm transition-transform duration-150 flex items-center font-light text-warning px-2 py-1 rounded"
-                : "group text-sm transition-transform duration-150 flex items-center font-light text-darkgray dark:text-light px-2 py-1 rounded"
-            }
-            href="/"
+    <AppBar position="static">
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          <Box sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            href="#app-bar-with-responsive-menu"
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
           >
-            Home
-          </Link>
-          {user && (
-            <Link
-              className={
-                pathname === "/dashboard"
-                  ? "group text-sm transition-transform duration-150 flex items-center font-light text-warning px-2 py-1 rounded"
-                  : "group text-sm transition-transform duration-150 flex items-center font-light text-darkgray dark:text-light px-2 py-1 rounded"
-              }
-              href="/dashboard"
+            LOGO
+          </Typography>
+
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
             >
-              Dashboard
-            </Link>
-          )}
-        </div>
-        <ThemeSwitch />
-        {user ? (
-          <div className="ml-3 relative">
-            <button
-              type="button"
-              onClick={() => setShowUserMenu((value) => !value)}
-              className="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-              id="user-menu-button"
-              data-testid="user-menu-button"
-              aria-expanded="false"
-              data-dropdown-toggle="user-dropdown"
-              data-dropdown-placement="bottom"
+              <MdMenu />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{ display: { xs: "block", md: "none" } }}
             >
-              <span className="sr-only">Open user menu</span>
-              <img
-                className="w-8 h-8 rounded-full"
-                src={user.photoURL ? user.photoURL : "/images/user.webp"}
-                alt={user.displayName ? user.displayName : "User"}
-              />
-            </button>
-            <div
-              className={`z-50 absolute right-full translate-x-9 top-5 ${
-                !showUserMenu && "hidden"
-              } my-4 text-base list-none bg-light divide-y divide-lightgray rounded-lg shadow dark:bg-darkgray border border-primary dark:divide-gray-600`}
-              id="user-dropdown"
-              data-testid="user-dropdown"
-            >
-              <div className="px-4 py-3">
-                <span className="block text-sm text-darkgray w-max dark:text-light">
-                  {user.displayName || "Bonnie Green"}
+              {pages.map((page) => (
+                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+          <Box sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            href="#app-bar-with-responsive-menu"
+            sx={{
+              mr: 2,
+              display: { xs: "flex", md: "none" },
+              flexGrow: 1,
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            LOGO
+          </Typography>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+            {pages.map((page) => (
+              <Button
+                key={page}
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                {page}
+              </Button>
+            ))}
+          </Box>
+          {user ? (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar
+                    src={user.photoURL ? user.photoURL : "/images/user.webp"}
+                    alt={user.displayName ? user.displayName : "User"}
+                  />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <MenuItem key={setting.name} onClick={setting.onClick}>
+                    <Typography sx={{ textAlign: "center" }}>
+                      {setting.name}
+                    </Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          ) : (
+            <div className="mx-3">
+              <Link
+                className="bg-primary group transition-transform duration-150 flex items-center font-light hover:bg-secondary text-light px-4 py-2 rounded"
+                href="/signin"
+              >
+                Sign In{" "}
+                <span className="ml-1 group-hover:translate-x-1 transition-transform duration-150">
+                  <RiLoginCircleFill />
                 </span>
-                <span className="block mt-1 text-sm font-medium text-darkbg shadow-sm truncate dark:text-lightgray">
-                  {user.email}
-                </span>
-              </div>
-              <ul className="py-2" aria-labelledby="user-menu-button">
-                <li>
-                  <Link
-                    href="/"
-                    className="block px-4 py-2 text-sm text-darkgray hover:bg-primary dark:text-lightgray hover:text-light"
-                  >
-                    Profile
-                  </Link>
-                </li>
-                <li>
-                  <button
-                    onClick={SignOut}
-                    className="block px-4 py-2 w-full text-left text-sm text-darkgray hover:bg-primary dark:text-lightgray hover:text-light"
-                  >
-                    Sign out
-                  </button>
-                </li>
-              </ul>
+              </Link>
             </div>
-          </div>
-        ) : (
-          <div className="mx-3">
-            <Link
-              className="bg-primary group transition-transform duration-150 flex items-center font-light hover:bg-secondary text-light px-4 py-2 rounded"
-              href="/signin"
-            >
-              Sign In{" "}
-              <span className="ml-1 group-hover:translate-x-1 transition-transform duration-150">
-                <RiLoginCircleFill />
-              </span>
-            </Link>
-          </div>
-        )}
-      </div>
-    </nav>
+          )}
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
 };
 

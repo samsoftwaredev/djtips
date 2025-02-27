@@ -1,4 +1,3 @@
-import { Box, Container } from "@mui/material";
 import Navbar from "../Navbar";
 
 interface Props {
@@ -7,13 +6,10 @@ interface Props {
 
 const Layout = ({ children }: Props) => {
   return (
-    <Box>
+    <>
       <Navbar />
-      <Container maxWidth="lg" sx={{ padding: "2rem 0" }}>
-        {children}
-      </Container>
-      Layout
-    </Box>
+      {children}
+    </>
   );
 };
 
