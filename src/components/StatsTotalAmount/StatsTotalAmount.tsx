@@ -1,9 +1,14 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Typography, Paper } from "@mui/material";
 
 export default function TotalTips() {
-  const [totalTips, setTotalTips] = useState<number>(125.75);
+  const [totalTips, setTotalTips] = useState<number>(0);
+
+  useEffect(() => {
+    setTotalTips(333.75);
+    // Fetch the total tips from the database or API
+  }, []);
 
   return (
     <Box maxWidth={500} width="100%" mx="auto" m={4}>
