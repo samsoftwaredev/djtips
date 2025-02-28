@@ -17,11 +17,11 @@ import { db } from "@/constants";
 import { useAuth } from "@/hooks";
 
 interface Song {
-  id: number;
+  id: string;
   artist: string;
-  name: string;
+  userName: string;
   songTitle: string;
-  tip: string;
+  tip: number;
   imageUrl?: string;
 }
 
@@ -31,7 +31,7 @@ export default function SongQueue() {
   const { user } = useAuth();
   const [songs, setSongs] = useState<Song[]>(initialSongs);
 
-  const removeSong = (id: number) => {
+  const removeSong = (id: string) => {
     setSongs(songs.filter((song) => song.id !== id));
     remove(ref(db, "songRequest/" + user?.uid + "/" + id))
       .then(() => {
@@ -53,6 +53,7 @@ export default function SongQueue() {
           userName: data[key].name,
           songTitle: data[key].songTitle,
           artist: data[key].artist,
+          tip: +data[key].tip,
           imageUrl: "https://via.placeholder.com/50",
         }));
         setSongs(songsArray);
