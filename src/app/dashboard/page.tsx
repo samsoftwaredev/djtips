@@ -1,9 +1,9 @@
 "use client";
 
-import { Playlist, PrivateRoutes } from "@/components";
+import { Playlist, PrivateRoutes, StatsTotalAmount } from "@/components";
 import Layout from "@/components/Layout/Layout";
 import { useAuth } from "@/hooks";
-import { Box, Container } from "@mui/material";
+import { Box, Container, Paper } from "@mui/material";
 import Image from "next/image";
 import QRCode from "qrcode";
 import { useEffect, useState } from "react";
@@ -38,14 +38,21 @@ const Dashboard = () => {
         <Container>
           <h2 className="text-2xl">Dashboard</h2>
           <Box display="flex" alignItems="center" justifyContent="center">
-            <Image
-              onClick={goToSongRequest}
-              width="350"
-              height="350"
-              src={imageQRBase64}
-              alt="Friend Request QR code"
-            />
-            <Playlist />
+            <Paper elevation={3} sx={{ p: 4, textAlign: "center" }}>
+              {imageQRBase64 && (
+                <Image
+                  onClick={goToSongRequest}
+                  width="350"
+                  height="350"
+                  src={imageQRBase64}
+                  alt="Friend Request QR code"
+                />
+              )}
+            </Paper>
+            <Box>
+              <StatsTotalAmount />
+              <Playlist />
+            </Box>
           </Box>
         </Container>
       </Layout>

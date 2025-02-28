@@ -10,21 +10,19 @@ import {
   Alert,
   Paper,
 } from "@mui/material";
+import { SongRequestFormData } from "@/interfaces";
 
-interface FormData {
-  name: string;
-  songTitle: string;
-  artist?: string;
-  tip: string;
+interface Props {
+  onSubmit: (data: SongRequestFormData, callback: () => void) => void;
 }
 
-export default function SongRequestForm() {
+const SongRequestForm = ({ onSubmit }: Props) => {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<SongRequestFormData>({
     defaultValues: {
       name:
         typeof window !== "undefined"
@@ -37,23 +35,24 @@ export default function SongRequestForm() {
   });
   const [success, setSuccess] = useState<boolean>(false);
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log("Form Data:", data);
+  const onSubmitForm: SubmitHandler<SongRequestFormData> = (data) => {
     localStorage.setItem("userName", data.name);
-    reset({
-      name: data.name,
-      songTitle: "",
-      artist: "",
-      tip: "",
+    onSubmit(data, () => {
+      reset({
+        name: data.name,
+        songTitle: "",
+        artist: "",
+        tip: "",
+      });
+      setSuccess(true);
     });
-    setSuccess(true);
   };
 
   return (
-    <Box maxWidth={400} mx="auto" mt={4}>
+    <Box maxWidth={400} mx="auto" my={4}>
       <Paper elevation={3} sx={{ p: 4 }}>
         <Typography variant="h5" gutterBottom>
-          Song Request Form
+          Song Request
         </Typography>
 
         {success && (
@@ -62,14 +61,14 @@ export default function SongRequestForm() {
           </Alert>
         )}
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmitForm)}>
           <TextField
             fullWidth
-            label="Your Name"
+            label="Artist Name"
             margin="normal"
-            {...register("name", { required: "Name is required" })}
-            error={!!errors.name}
-            helperText={errors.name?.message}
+            {...register("artist", { required: "Artist name is required" })}
+            error={!!errors.artist}
+            helperText={errors.artist?.message}
           />
 
           <TextField
@@ -83,9 +82,11 @@ export default function SongRequestForm() {
 
           <TextField
             fullWidth
-            label="Artist Name (Optional)"
+            label="Your Name"
             margin="normal"
-            {...register("artist")}
+            {...register("name", { required: "Name is required" })}
+            error={!!errors.name}
+            helperText={errors.name?.message}
           />
 
           <TextField
@@ -110,10 +111,12 @@ export default function SongRequestForm() {
             color="primary"
             sx={{ mt: 2 }}
           >
-            Submit
+            Make Payment & Submit
           </Button>
         </form>
       </Paper>
     </Box>
   );
-}
+};
+
+export default SongRequestForm;

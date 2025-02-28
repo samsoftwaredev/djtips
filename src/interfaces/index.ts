@@ -63,3 +63,10 @@ export interface IToast {
   toast_type: TypeOptions;
   toast_theme: string;
 }
+
+export interface SongRequestFormData {
+  name: string;
+  songTitle: string;
+  artist?: string;
+  tip: string;
+}

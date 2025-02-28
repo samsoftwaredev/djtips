@@ -1,7 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getDatabase } from "firebase/database";
 
-const app = initializeApp({
+export const app = initializeApp({
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_APIKEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
@@ -11,4 +12,4 @@ const app = initializeApp({
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 });
 export const firebaseAuth = getAuth(app);
-export default app;
+export const db = getDatabase(app);

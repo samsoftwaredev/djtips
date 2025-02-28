@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -12,52 +12,69 @@ import {
   Paper,
 } from "@mui/material";
 import { IoMdClose } from "react-icons/io";
+import { onValue, ref, remove } from "firebase/database";
+import { db } from "@/constants";
+import { useAuth } from "@/hooks";
 
 interface Song {
   id: number;
-  userName: string;
-  songTitle: string;
   artist: string;
-  imageUrl: string;
+  name: string;
+  songTitle: string;
+  tip: string;
+  imageUrl?: string;
 }
 
-const initialSongs: Song[] = [
-  {
-    id: 1,
-    userName: "Alice",
-    songTitle: "Shape of You",
-    artist: "Ed Sheeran",
-    imageUrl: "https://via.placeholder.com/50",
-  },
-  {
-    id: 2,
-    userName: "Bob",
-    songTitle: "Blinding Lights",
-    artist: "The Weeknd",
-    imageUrl: "https://via.placeholder.com/50",
-  },
-  {
-    id: 3,
-    userName: "Charlie",
-    songTitle: "Someone Like You",
-    artist: "Adele",
-    imageUrl: "https://via.placeholder.com/50",
-  },
-];
+const initialSongs: Song[] = [];
 
 export default function SongQueue() {
+  const { user } = useAuth();
   const [songs, setSongs] = useState<Song[]>(initialSongs);
 
   const removeSong = (id: number) => {
     setSongs(songs.filter((song) => song.id !== id));
   };
 
+  const updateMusicPlaylist = () => {
+    const starCountRef = ref(db, "songRequest/" + user?.uid);
+    onValue(starCountRef, (snapshot) => {
+      const data = snapshot.val();
+      // Update UI based on data
+      if (data) {
+        const songsArray = Object.keys(data).map((key) => ({
+          id: key,
+          userName: data[key].name,
+          songTitle: data[key].songTitle,
+          artist: data[key].artist,
+          imageUrl: "https://via.placeholder.com/50",
+        }));
+        setSongs(songsArray);
+      }
+      console.log("songRequest NEW: ", data); // This will print the value of stars
+    });
+  };
+
+  const removeListener = () => {};
+
+  useEffect(() => {
+    updateMusicPlaylist();
+    return () => {
+      // Cleanup if necessary
+      removeListener();
+    };
+  }, []);
+
   return (
-    <Box maxWidth={500} mx="auto" m={4}>
+    <Box maxWidth={500} width="100%" mx="auto" m={4}>
       <Paper elevation={3} sx={{ p: 3 }}>
         <Typography variant="h5" gutterBottom>
-          Song Queue
+          Song Requested
         </Typography>
+        {songs.length === 0 && (
+          <Typography variant="body1" color="textSecondary">
+            No songs in the queue.
+          </Typography>
+        )}
         <List>
           {songs.map((song, index) => (
             <ListItem
