@@ -33,6 +33,13 @@ export default function SongQueue() {
 
   const removeSong = (id: number) => {
     setSongs(songs.filter((song) => song.id !== id));
+    remove(ref(db, "songRequest/" + user?.uid + "/" + id))
+      .then(() => {
+        console.log("Data removed successfully!");
+      })
+      .catch((error) => {
+        console.error("Error removing data:", error);
+      });
   };
 
   const updateMusicPlaylist = () => {
@@ -54,7 +61,15 @@ export default function SongQueue() {
     });
   };
 
-  const removeListener = () => {};
+  const removeListener = () => {
+    remove(ref(db, "songRequest/" + user?.uid))
+      .then(() => {
+        console.log("Data removed successfully!");
+      })
+      .catch((error) => {
+        console.error("Error removing data:", error);
+      });
+  };
 
   useEffect(() => {
     updateMusicPlaylist();
