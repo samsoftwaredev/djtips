@@ -12,7 +12,7 @@ import {
   Paper,
 } from "@mui/material";
 import { IoMdClose } from "react-icons/io";
-import { onValue, ref, remove } from "firebase/database";
+import { DataSnapshot, off, onValue, ref, remove } from "firebase/database";
 import { db } from "@/constants";
 import { useAuth } from "@/hooks";
 
@@ -42,9 +42,10 @@ export default function SongQueue() {
       });
   };
 
-  const updateMusicPlaylist = () => {
-    const starCountRef = ref(db, "songRequest/" + user?.uid);
-    onValue(starCountRef, (snapshot) => {
+  useEffect(() => {
+    const starPlaylistRef = ref(db, "songRequest/" + user?.uid);
+
+    const handelData = (snapshot: DataSnapshot) => {
       const data = snapshot.val();
       // Update UI based on data
       if (data) {
@@ -59,24 +60,11 @@ export default function SongQueue() {
         setSongs(songsArray);
       }
       console.log("songRequest NEW: ", data); // This will print the value of stars
-    });
-  };
+    };
+    onValue(starPlaylistRef, handelData);
 
-  const removeListener = () => {
-    remove(ref(db, "songRequest/" + user?.uid))
-      .then(() => {
-        console.log("Data removed successfully!");
-      })
-      .catch((error) => {
-        console.error("Error removing data:", error);
-      });
-  };
-
-  useEffect(() => {
-    updateMusicPlaylist();
     return () => {
-      // Cleanup if necessary
-      removeListener();
+      off(starPlaylistRef);
     };
   }, []);
 
