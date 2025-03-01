@@ -30,7 +30,7 @@ const SongRequestPage = ({ id }: { id: string }) => {
   }
 
   return (
-    <Layout isNotDj={true}>
+    <Layout IsDjUser={false}>
       <Container maxWidth="sm" sx={{ mt: 4 }}>
         <Stepper
           sx={{ width: "100%" }}

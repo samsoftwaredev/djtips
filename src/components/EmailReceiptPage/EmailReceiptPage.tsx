@@ -17,7 +17,7 @@ const EmailReceiptPage = ({ id }: { id: string }) => {
   }, []);
 
   return (
-    <Layout isNotDj={true}>
+    <Layout IsDjUser={false}>
       <Container maxWidth="sm" sx={{ textAlign: "center", mt: 4 }}>
         <Alert severity="success" sx={{ mb: 2 }}>
           Thanks for the tip! Your song request has been submitted.{" "}

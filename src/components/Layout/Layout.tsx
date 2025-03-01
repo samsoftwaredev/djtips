@@ -2,13 +2,13 @@ import Navbar from "../Navbar";
 
 interface Props {
   children?: React.ReactNode;
-  isNotDj?: boolean;
+  IsDjUser?: boolean;
 }
 
-const Layout = ({ children, isNotDj = false }: Props) => {
+const Layout = ({ children, IsDjUser = true }: Props) => {
   return (
     <>
-      <Navbar isNotDj={isNotDj} />
+      <Navbar IsDjUser={IsDjUser} />
       {children}
     </>
   );

@@ -22,7 +22,7 @@ import { useRouter } from "next/navigation";
 
 const pages = [{ label: "Home", value: "/" }];
 
-const Navbar = ({ isNotDj = false }: { isNotDj: boolean }) => {
+const Navbar = ({ IsDjUser }: { IsDjUser: boolean }) => {
   const { user, SignOut } = useAuth();
   const router = useRouter();
 
@@ -191,13 +191,13 @@ const Navbar = ({ isNotDj = false }: { isNotDj: boolean }) => {
           ) : (
             <div
               className="mx-3"
-              style={{ display: isNotDj === true ? "none" : "block" }}
+              style={{ display: IsDjUser === true ? "block" : "none" }}
             >
               <Link
                 className="bg-primary group transition-transform duration-150 flex items-center font-light hover:bg-secondary text-light px-4 py-2 rounded"
                 href="/login"
               >
-                Sign In{" "}
+                Sign In
                 <span className="ml-1 group-hover:translate-x-1 transition-transform duration-150">
                   <RiLoginCircleFill />
                 </span>
