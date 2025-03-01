@@ -10,12 +10,12 @@ import {
   TextField,
   Button,
   Typography,
-  IconButton,
+  // IconButton,
   Box,
   Paper,
-  Divider,
+  // Divider,
 } from "@mui/material";
-import { ImFacebook, ImTwitter, ImGoogle } from "react-icons/im";
+// import { ImFacebook, ImTwitter, ImGoogle } from "react-icons/im";
 
 // custom imports
 import { LoginFormValues } from "@/interfaces";
@@ -33,7 +33,7 @@ const Login = () => {
     formState: { errors },
   } = useForm<LoginFormValues>();
 
-  const { SignIn, SignInWithGoogle, loading } = useAuth();
+  const { SignIn, loading, user } = useAuth();
   const { theme } = useTheme();
 
   const onSuccess = () => {
@@ -44,16 +44,22 @@ const Login = () => {
     });
     router.push("/dashboard");
   };
+
   const handleLogin: SubmitHandler<LoginFormValues> = (creds) => {
     SignIn(creds, onSuccess);
   };
+
+  if (user) {
+    router.push("/dashboard");
+    return null;
+  }
 
   return (
     <Layout>
       <ThemeSwitch />
       <Paper
         elevation={3}
-        sx={{ padding: 3, maxWidth: 400, margin: "auto", marginTop: 5 }}
+        sx={{ padding: 3, maxWidth: 400, margin: "auto", my: 5 }}
       >
         <Box display="flex" justifyContent="center" mb={2}>
           <FaUserCircle size={50} />
@@ -99,9 +105,9 @@ const Login = () => {
             Register here
           </Link>
         </Typography>
-        <Divider sx={{ my: 3 }}>OR</Divider>
+        {/* <Divider sx={{ my: 3 }}>OR</Divider> */}
         <Box display="flex" justifyContent="center" gap={2}>
-          <IconButton
+          {/* <IconButton
             color="primary"
             onClick={() => SignInWithGoogle(onSuccess)}
           >
@@ -112,7 +118,7 @@ const Login = () => {
           </IconButton>
           <IconButton color="primary">
             <ImGoogle />
-          </IconButton>
+          </IconButton> */}
         </Box>
       </Paper>
     </Layout>

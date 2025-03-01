@@ -1,15 +1,13 @@
 "use client";
-// system imports
 import { useForm, SubmitHandler } from "react-hook-form";
 import { FaUserCircle } from "react-icons/fa";
 import { RiLoginCircleFill } from "react-icons/ri";
-import { ImFacebook, ImTwitter, ImGoogle } from "react-icons/im";
+// import { ImFacebook, ImTwitter, ImGoogle } from "react-icons/im";
 
-// custom imports
 import {
   TextField,
   Button,
-  IconButton,
+  // IconButton,
   Typography,
   Paper,
   Box,
@@ -31,7 +29,7 @@ const Registration = () => {
   } = useForm<UserFormValues>();
   const router = useRouter();
 
-  const { SignUp, loading } = useAuth();
+  const { SignUp, loading, user } = useAuth();
   const { theme } = useTheme();
 
   const onSuccess = () => {
@@ -46,9 +44,14 @@ const Registration = () => {
     SignUp(creds, onSuccess);
   };
 
+  if (user) {
+    router.push("/dashboard");
+    return null;
+  }
+
   return (
     <Layout>
-      <Box maxWidth={400} mx="auto" mt={4}>
+      <Box maxWidth={400} mx="auto" my={4}>
         <Paper elevation={3} sx={{ p: 4, textAlign: "center" }}>
           <Typography variant="h4" color="primary" gutterBottom>
             <FaUserCircle />
@@ -113,11 +116,11 @@ const Registration = () => {
           </Typography>
 
           <Box display="flex" justifyContent="center" mt={2}>
-            {[ImGoogle, ImFacebook, ImTwitter].map((Icon, index) => (
+            {/* {[ImGoogle, ImFacebook, ImTwitter].map((Icon, index) => (
               <IconButton key={index} color="primary" sx={{ mx: 1 }}>
                 <Icon size={24} />
               </IconButton>
-            ))}
+            ))} */}
           </Box>
         </Paper>
       </Box>
