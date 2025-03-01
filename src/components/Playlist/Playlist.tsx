@@ -11,7 +11,7 @@ import {
   Paper,
 } from "@mui/material";
 import { IoMdClose } from "react-icons/io";
-import { ref, remove } from "firebase/database";
+import { ref, update } from "firebase/database";
 import { db } from "@/constants";
 import { useAuth } from "@/hooks";
 import { Song } from "@/interfaces";
@@ -23,16 +23,19 @@ interface Props {
 
 export default function SongQueue({ songs, setSongs }: Props) {
   const { user } = useAuth();
+  const visibleSongs = songs.filter((song) => song.visible !== false);
 
   const hideSong = (id: string) => {
     setSongs(songs.filter((song) => song.id !== id));
-    // TODO: update set visibility to false
-    remove(ref(db, "songRequest/" + user?.uid + "/" + id))
+    update(ref(db, "songRequest/" + user?.uid + "/" + id), {
+      visible: false,
+      updateAt: new Date().toISOString(),
+    })
       .then(() => {
-        console.log("Data removed successfully!");
+        console.log("Data updated successfully!");
       })
       .catch((error) => {
-        console.error("Error removing data:", error);
+        console.error("Error updating data:", error);
       });
   };
 
@@ -42,13 +45,13 @@ export default function SongQueue({ songs, setSongs }: Props) {
         <Typography variant="h5" gutterBottom>
           Song Requested
         </Typography>
-        {songs.length === 0 && (
+        {visibleSongs.length === 0 && (
           <Typography variant="body1" color="textSecondary">
             No songs in the queue.
           </Typography>
         )}
         <List>
-          {songs.map((song, index) => (
+          {visibleSongs.map((song, index) => (
             <ListItem
               key={song.id}
               secondaryAction={

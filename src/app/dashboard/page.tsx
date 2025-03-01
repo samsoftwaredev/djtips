@@ -47,15 +47,16 @@ const Dashboard = () => {
       const data = snapshot.val();
       // Update UI based on data
       if (data) {
-        const songsArray = Object.keys(data).map((key) => ({
+        const songsList = Object.keys(data).map((key) => ({
           id: key,
           userName: data[key].name,
           songTitle: data[key].songTitle,
           artist: data[key].artist,
           tip: +data[key].tip,
+          visible: data[key].visible,
           imageUrl: "https://via.placeholder.com/50",
         }));
-        setSongs(songsArray);
+        setSongs(songsList);
       }
     };
 

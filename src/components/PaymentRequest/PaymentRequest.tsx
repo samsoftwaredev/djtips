@@ -25,6 +25,7 @@ const PaymentRequest = ({
     return new Promise((resolve, reject) => {
       push(ref(db, "songRequest/" + djId), {
         ...song,
+        createdAt: new Date().toISOString(),
       })
         .then(() => {
           console.log("Data written successfully!");
@@ -63,7 +64,7 @@ const PaymentRequest = ({
           amount={+song.tip}
           onPaymentSuccess={onPaymentSuccess}
         />
-      </Elements>{" "}
+      </Elements>
     </Paper>
   );
 };
