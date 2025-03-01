@@ -2,9 +2,24 @@
 
 import Layout from "@/components/Layout/Layout";
 import styles from "./page.module.css";
-import { Button, Typography } from "@mui/material";
+import { Button, styled, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
+
+const NeonButton = styled(Button)({
+  background: "linear-gradient(45deg, #ff00ff, #00ffff)",
+  color: "#fff",
+  fontWeight: "bold",
+  padding: "10px 20px",
+  boxShadow: "0px 0px 10px #ff00ff",
+  transition: "all 0.3s",
+  "&:hover": {
+    boxShadow: "0px 0px 20px #ff00ff",
+    transform: "scale(1.05)",
+  },
+});
 
 export default function Home() {
+  const router = useRouter();
   return (
     <Layout>
       <div
@@ -18,7 +33,9 @@ export default function Home() {
           <Typography fontSize="1.9em" fontWeight="900">
             Get paid and keep the party alive!
           </Typography>
-          <Button>Start For Free</Button>
+          <NeonButton onClick={() => router.push("/signup")}>
+            Start For Free
+          </NeonButton>
         </div>
       </div>
     </Layout>
