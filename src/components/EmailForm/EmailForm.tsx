@@ -37,8 +37,10 @@ const EmailForm = ({ id }: { id: string }) => {
       // Show the success message
       setOpenSnackbar(true);
 
-      // Reset the form after submission
-      reset();
+      setTimeout(() => {
+        // Reset the form after submission
+        reset();
+      }, 2000);
     } catch (error) {
       console.error("Error saving email:", error);
     }
