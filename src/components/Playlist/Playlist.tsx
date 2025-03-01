@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -12,27 +11,22 @@ import {
   Paper,
 } from "@mui/material";
 import { IoMdClose } from "react-icons/io";
-import { DataSnapshot, off, onValue, ref, remove } from "firebase/database";
+import { ref, remove } from "firebase/database";
 import { db } from "@/constants";
 import { useAuth } from "@/hooks";
+import { Song } from "@/interfaces";
 
-interface Song {
-  id: string;
-  artist: string;
-  userName: string;
-  songTitle: string;
-  tip: number;
-  imageUrl?: string;
+interface Props {
+  songs: Song[];
+  setSongs: (songs: Song[]) => void;
 }
 
-const initialSongs: Song[] = [];
-
-export default function SongQueue() {
+export default function SongQueue({ songs, setSongs }: Props) {
   const { user } = useAuth();
-  const [songs, setSongs] = useState<Song[]>(initialSongs);
 
-  const removeSong = (id: string) => {
+  const hideSong = (id: string) => {
     setSongs(songs.filter((song) => song.id !== id));
+    // TODO: update set visibility to false
     remove(ref(db, "songRequest/" + user?.uid + "/" + id))
       .then(() => {
         console.log("Data removed successfully!");
@@ -42,34 +36,8 @@ export default function SongQueue() {
       });
   };
 
-  useEffect(() => {
-    const starPlaylistRef = ref(db, "songRequest/" + user?.uid);
-
-    const handelData = (snapshot: DataSnapshot) => {
-      const data = snapshot.val();
-      // Update UI based on data
-      if (data) {
-        const songsArray = Object.keys(data).map((key) => ({
-          id: key,
-          userName: data[key].name,
-          songTitle: data[key].songTitle,
-          artist: data[key].artist,
-          tip: +data[key].tip,
-          imageUrl: "https://via.placeholder.com/50",
-        }));
-        setSongs(songsArray);
-      }
-      console.log("songRequest NEW: ", data); // This will print the value of stars
-    };
-    onValue(starPlaylistRef, handelData);
-
-    return () => {
-      off(starPlaylistRef);
-    };
-  }, []);
-
   return (
-    <Box maxWidth={500} width="100%" mx="auto" m={4}>
+    <Box maxWidth={500} width="100%" mx="auto">
       <Paper elevation={3} sx={{ p: 3 }}>
         <Typography variant="h5" gutterBottom>
           Song Requested
@@ -87,7 +55,7 @@ export default function SongQueue() {
                 <IconButton
                   edge="end"
                   aria-label="delete"
-                  onClick={() => removeSong(song.id)}
+                  onClick={() => hideSong(song.id)}
                 >
                   <IoMdClose />
                 </IconButton>

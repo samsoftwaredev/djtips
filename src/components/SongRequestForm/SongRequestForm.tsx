@@ -1,26 +1,31 @@
 "use client";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { useState } from "react";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import {
   TextField,
   Button,
-  MenuItem,
   Box,
   Typography,
-  Alert,
   Paper,
+  RadioGroup,
+  FormLabel,
+  FormControl,
+  Radio,
+  FormControlLabel,
+  FormHelperText,
 } from "@mui/material";
 import { SongRequestFormData } from "@/interfaces";
 
 interface Props {
-  onSubmit: (data: SongRequestFormData, callback: () => void) => void;
+  onSubmit: (data: SongRequestFormData) => void;
+  song: SongRequestFormData | null;
 }
 
-const SongRequestForm = ({ onSubmit }: Props) => {
+const SongRequestForm = ({ onSubmit, song }: Props) => {
+  const defaultTipAmount = "5";
   const {
+    control,
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<SongRequestFormData>({
     defaultValues: {
@@ -28,24 +33,15 @@ const SongRequestForm = ({ onSubmit }: Props) => {
         typeof window !== "undefined"
           ? localStorage.getItem("userName") || ""
           : "",
-      songTitle: "",
-      artist: "",
-      tip: "",
+      songTitle: song?.songTitle || "",
+      artist: song?.artist || "",
+      tip: song?.tip || defaultTipAmount, // default tip as a string
     },
   });
-  const [success, setSuccess] = useState<boolean>(false);
 
   const onSubmitForm: SubmitHandler<SongRequestFormData> = (data) => {
     localStorage.setItem("userName", data.name);
-    onSubmit(data, () => {
-      reset({
-        name: data.name,
-        songTitle: "",
-        artist: "",
-        tip: "",
-      });
-      setSuccess(true);
-    });
+    onSubmit(data);
   };
 
   return (
@@ -54,12 +50,6 @@ const SongRequestForm = ({ onSubmit }: Props) => {
         <Typography variant="h5" gutterBottom>
           Song Request
         </Typography>
-
-        {success && (
-          <Alert severity="success" sx={{ mb: 2 }}>
-            🎉 Success! Thanks for the TIP. Feel free to request another song.
-          </Alert>
-        )}
 
         <form onSubmit={handleSubmit(onSubmitForm)}>
           <TextField
@@ -89,20 +79,37 @@ const SongRequestForm = ({ onSubmit }: Props) => {
             helperText={errors.name?.message}
           />
 
-          <TextField
-            select
-            fullWidth
-            label="Tip Amount"
-            margin="normal"
-            {...register("tip", { required: "Please select a tip amount" })}
-            error={!!errors.tip}
-            helperText={errors.tip?.message}
-          >
-            <MenuItem value="">Select a tip</MenuItem>
-            <MenuItem value="3">$3</MenuItem>
-            <MenuItem value="5">$5</MenuItem>
-            <MenuItem value="10">$10</MenuItem>
-          </TextField>
+          <Controller
+            name="tip"
+            control={control}
+            rules={{ required: "Please select a tip amount" }}
+            render={({ field }) => (
+              <FormControl
+                component="fieldset"
+                error={!!errors.tip}
+                margin="normal"
+              >
+                <FormLabel component="legend">Tip Amount</FormLabel>
+                <RadioGroup row {...field}>
+                  {[
+                    { value: "3", label: "$3" },
+                    { value: "5", label: "$5" },
+                    { value: "10", label: "$10" },
+                  ].map(({ value, label }) => (
+                    <FormControlLabel
+                      key={value}
+                      value={value}
+                      control={<Radio />}
+                      label={label}
+                    />
+                  ))}
+                </RadioGroup>
+                {errors.tip && (
+                  <FormHelperText>{errors.tip.message}</FormHelperText>
+                )}
+              </FormControl>
+            )}
+          />
 
           <Button
             type="submit"
@@ -111,7 +118,7 @@ const SongRequestForm = ({ onSubmit }: Props) => {
             color="primary"
             sx={{ mt: 2 }}
           >
-            Make Payment & Submit
+            Request Song
           </Button>
         </form>
       </Paper>

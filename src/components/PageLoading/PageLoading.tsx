@@ -1,10 +1,15 @@
-import { FourCircleLoader } from "@/components";
+import { Box, CircularProgress } from "@mui/material";
 
 const PageLoading = () => {
   return (
-    <div className="w-screen dark:bg-darkgray min-h-screen flex justify-center align-middle items-center">
-      <FourCircleLoader />
-    </div>
+    <Box
+      justifyContent={"center"}
+      display={"flex"}
+      alignItems={"center"}
+      height={"100vh"}
+    >
+      <CircularProgress size={20} />
+    </Box>
   );
 };
 

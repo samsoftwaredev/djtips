@@ -20,14 +20,12 @@ import MenuItem from "@mui/material/MenuItem";
 import { MdMenu } from "react-icons/md";
 import { useRouter } from "next/navigation";
 
-const pages = ["Products", "Pricing"];
+const pages = [{ label: "Home", value: "/" }];
 
-const Navbar = () => {
+const Navbar = ({ isNotDj = false }: { isNotDj: boolean }) => {
   const { user, SignOut } = useAuth();
   const router = useRouter();
 
-  // const [showUserMenu, setShowUserMenu] = useState(false);
-  // const pathname = usePathname();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -51,13 +49,13 @@ const Navbar = () => {
   };
 
   const settings = [
-    {
-      name: !user ? "Account" : user.displayName,
-      onClick: () => {
-        handleCloseUserMenu();
-        router.push("/profile");
-      },
-    },
+    // {
+    //   name: !user ? "Account" : user.displayName,
+    //   onClick: () => {
+    //     handleCloseUserMenu();
+    //     router.push("/profile");
+    //   },
+    // },
     {
       name: "Dashboard",
       onClick: () => {
@@ -86,7 +84,7 @@ const Navbar = () => {
               textDecoration: "none",
             }}
           >
-            <Link href="/">LOGO</Link>
+            <Link href="/">DJTipMe</Link>
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -116,9 +114,13 @@ const Navbar = () => {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: "block", md: "none" } }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
+              {pages.map(({ label, value }) => (
+                <MenuItem key={label} onClick={handleCloseNavMenu}>
+                  <Link href={value}>
+                    <Typography sx={{ textAlign: "center" }}>
+                      {label}
+                    </Typography>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
@@ -138,16 +140,16 @@ const Navbar = () => {
               textDecoration: "none",
             }}
           >
-            <Link href="/">LOGO</Link>
+            <Link href="/">DJTipMe</Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            {pages.map(({ label }) => (
               <Button
-                key={page}
+                key={label}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page}
+                {label}
               </Button>
             ))}
           </Box>
@@ -187,7 +189,10 @@ const Navbar = () => {
               </Menu>
             </Box>
           ) : (
-            <div className="mx-3">
+            <div
+              className="mx-3"
+              style={{ display: isNotDj === true ? "none" : "block" }}
+            >
               <Link
                 className="bg-primary group transition-transform duration-150 flex items-center font-light hover:bg-secondary text-light px-4 py-2 rounded"
                 href="/login"

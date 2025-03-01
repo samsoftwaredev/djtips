@@ -4,7 +4,11 @@ import { toast } from "react-toastify";
 import { alertType } from "@/constants";
 import { IToast } from "@/interfaces";
 
-const showAlert = (
+export const convertToSubcurrency = (amount: number) => {
+  return amount * 100;
+};
+
+export const showAlert = (
   title: string,
   message: string,
   confirmButtonText: string,
@@ -44,7 +48,7 @@ const showAlert = (
   });
 };
 
-const showCofirmDialog = (
+export const showCofirmDialog = (
   title: string,
   message: string,
   confirmButtonText: string,
@@ -85,7 +89,7 @@ const showCofirmDialog = (
   });
 };
 
-const toastify = ({ message, toast_type, toast_theme }: IToast) => {
+export const toastify = ({ message, toast_type, toast_theme }: IToast) => {
   toast(message, {
     position: "top-right",
     autoClose: 2000,
@@ -97,5 +101,3 @@ const toastify = ({ message, toast_type, toast_theme }: IToast) => {
     type: toast_type,
   });
 };
-
-export { showAlert, showCofirmDialog, toastify };

@@ -10,9 +10,12 @@
 }
 
 .centeredText {
+  border-radius: 20px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
   font-size: 2rem;
   font-weight: bold;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-  max-width: 80%;
+  max-width: 350px;
   margin: 0 auto;
 }

@@ -1,17 +1,13 @@
 "use client";
-import { useEffect, useState } from "react";
 import { Box, Typography, Paper } from "@mui/material";
 
-export default function TotalTips() {
-  const [totalTips, setTotalTips] = useState<number>(0);
+interface Props {
+  totalTips: number;
+}
 
-  useEffect(() => {
-    setTotalTips(333.75);
-    // Fetch the total tips from the database or API
-  }, []);
-
+export default function TotalTips({ totalTips }: Props) {
   return (
-    <Box maxWidth={500} width="100%" mx="auto" m={4}>
+    <Box maxWidth={500} width="100%" mx="auto">
       <Paper elevation={3} sx={{ p: 4, textAlign: "center" }}>
         <Typography variant="h5" gutterBottom>
           Total Tips

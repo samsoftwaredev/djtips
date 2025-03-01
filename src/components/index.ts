@@ -1,4 +1,4 @@
-export { default as FourCircleLoader } from "./FourCircleLoader";
+export { default as Loader } from "./Loader";
 export { default as Input } from "./Input";
 export { default as Button } from "./Button";
 export { default as Navbar } from "./Navbar";
@@ -9,3 +9,7 @@ export { default as Layout } from "./Layout";
 export { default as SongRequestForm } from "./SongRequestForm";
 export { default as Playlist } from "./Playlist";
 export { default as StatsTotalAmount } from "./StatsTotalAmount";
+export { default as CheckoutPage } from "./CheckoutPage";
+export { default as PaymentRequest } from "./PaymentRequest";
+export { default as SongRequestPage } from "./SongRequestPage";
+export { default as EmailReceiptPage } from "./EmailReceiptPage";

@@ -70,3 +70,13 @@ export interface SongRequestFormData {
   artist?: string;
   tip: string;
 }
+
+export interface Song {
+  id: string;
+  visible?: boolean;
+  artist: string;
+  userName: string;
+  songTitle: string;
+  tip: number;
+  imageUrl?: string;
+}

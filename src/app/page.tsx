@@ -27,11 +27,13 @@ export default function Home() {
         style={{ backgroundImage: 'url("/dj.jpg")' }}
       >
         <div className={styles.centeredText}>
-          <Typography fontSize="1.2em" fontWeight="100">
-            Spin the beats they love.
+          <Typography fontSize="1em" fontWeight="900">
+            Request & Tip Your Favorite Songs!
           </Typography>
-          <Typography fontSize="1.9em" fontWeight="900">
-            Get paid and keep the party alive!
+          <Typography mb={3} p={1} fontSize=".6em" fontWeight="300">
+            DJs can accept song requests and tips from the audience in
+            real-time. Request your favorite song and boost its priority with a
+            tip!
           </Typography>
           <NeonButton onClick={() => router.push("/signup")}>
             Start For Free
