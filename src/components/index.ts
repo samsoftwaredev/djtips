@@ -13,3 +13,4 @@ export { default as CheckoutPage } from "./CheckoutPage";
 export { default as PaymentRequest } from "./PaymentRequest";
 export { default as SongRequestPage } from "./SongRequestPage";
 export { default as EmailReceiptPage } from "./EmailReceiptPage";
+export { default as EmailForm } from "./EmailForm";
